@@ -1,0 +1,3 @@
+# okapi-client-internal
+
+本项目是okapi-client的服务端内部实现。因为okapi-client是面向开发者的通用SDK，所以基于精简和安全原则有些功能只能保证本地测试运行。当用户上传组合后的Jar文件时，本项目会在服务器上替代okapi-client，完成全部功能。
