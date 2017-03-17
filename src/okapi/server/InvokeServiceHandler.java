@@ -1,5 +1,17 @@
 package okapi.server;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import okapi.annotation.DELETE;
+import okapi.annotation.GET;
+import okapi.annotation.POST;
+import okapi.annotation.PUT;
+import okapi.client.Service;
+import okapi.client.ServiceClient;
+import okapi.gen.InvokeService;
+import okapi.gen.Response;
+import okapi.util.Tools;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -9,17 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import okapi.annotation.DELETE;
-import okapi.annotation.GET;
-import okapi.annotation.POST;
-import okapi.annotation.PUT;
-import okapi.gen.*;
-import okapi.client.PublicClientOperator;
-import okapi.client.Service;
-import okapi.client.ServiceClient;
 
 class ApiRule{
 	private String action;
@@ -184,13 +185,13 @@ public class InvokeServiceHandler implements InvokeService.Iface {
 						}else{
 							h.put("Content-Type", "text/plain");
 						}
-						ByteBuffer bb = PublicClientOperator.getBinaryFromObject(obj);
+						ByteBuffer bb = Tools.transToByteBuffer(obj);
 						return new Response(code, h, bb);
 				}
 			}
 			code = 404;
 			obj = "cannot find matched rule";
-			ByteBuffer bb = PublicClientOperator.getBinaryFromObject(obj);
+			ByteBuffer bb = Tools.transToByteBuffer(obj);
 			return new Response(code, h, bb);
 	}
 }

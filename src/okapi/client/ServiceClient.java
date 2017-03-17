@@ -1,19 +1,17 @@
 package okapi.client;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import okapi.gen.InvokeService;
-
+import okapi.util.Tools;
 import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TNonblockingTransport;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 public class ServiceClient  {
 	public static void main(String[] args) {
@@ -23,7 +21,7 @@ public class ServiceClient  {
 //			Response rsp = invokeAPIClient("localhost", "12345", "/Train/T112", "get", null, null, null).get();
 //			System.out.println(rsp.getJSONObject().toString());
 			Response rsp = invokeAPIClient("localhost", "12345", "/Train/T112", "get", null, null, null).get();
-			System.out.println(rsp.getJSONObject().toString());
+			System.out.println(rsp.getBodyByJSONObject());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,7 +44,7 @@ public class ServiceClient  {
 	}
 	public static InvokeFuture invokeAPI(String api_path, 
 			String method, Map<String, String> arg, Map<String, String> headers, Object body) {
-		ByteBuffer bb = PublicClientOperator.getBinaryFromObject(body);
+		ByteBuffer bb = Tools.transToByteBuffer(body);
 //		if(body  instanceof JSONObject || body instanceof JSONArray){
 //			if(headers == null){
 //				headers = new HashMap<String, String>();
@@ -106,7 +104,7 @@ public class ServiceClient  {
 		}
 		else if(api_path.matches(ClientGlobalSettings.getRegHTTPURL())) {
 			// HTTP请求
-			InvokeFuture future =PublicClientOperator.ForwardHttp(method, api_path, arg, headers, body);
+			InvokeFuture future = Tools.forwardHttp(method, api_path, arg, headers, body);
 			return future;			
 		}
 		else {

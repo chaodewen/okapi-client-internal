@@ -42,7 +42,7 @@ public class Server {
 		okapi.client.Response rspCheck = ServiceClient.invokeAPI(sys_meta + this.service_id2).get();
 		if (rspCheck.isOK()) {
 			System.out.println(rspCheck);
-			service = rspCheck.getJSONObject();
+			service = rspCheck.getBodyByJSONObject();
 		} else {
 			throw new Exception("Get Service Info Error: " + rspCheck.toString());
 		}

@@ -15,7 +15,7 @@ public class ThriftInvokeFuture extends InvokeFuture {
 	}
 	
 	public boolean offer(Response response) {
-		return this.invokeAPIOutput.offer(PublicClientOperator.repackBody(response));
+		return this.invokeAPIOutput.offer(response);
 	}
 	
 	@Override
